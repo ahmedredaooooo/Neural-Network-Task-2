@@ -1,5 +1,6 @@
 
 from preprocessing import *
+from Main import *
 
 FEATURES = 5
 CLASSES = 3 
@@ -12,6 +13,5 @@ run_gui()
 def on_submit():
     hidden_layers = [] 
     eta, epochs, bias_flag, sigmoid0_tangent1 = 0
-
-    modified_data = preprocess()
-    mlp(modified_data,hidden_layers, eta, epochs, bias_flag, sigmoid0_tangent1)
+    
+    main(hidden_layers, eta, epochs, bias_flag, sigmoid0_tangent1)
