@@ -1,16 +1,17 @@
 
 FEATURES = 5
-CLASSES = 3 
+CLASSES = 3
 import math
 import numpy as np
 
-def mlp(data,hidden_layers, eta, epochs, bias_flag, sigmoid0_tangent1):
+def mlp(x_train,y_train,  x_test,y_test,hidden_layers, eta, epochs, bias_flag, sigmoid0_tangent1):
 
     activation_outputs = []
+    number_of_rows = len(y_train)
     weights = weight_initialize(hidden_layers)   # --> should contatin the bias also if bias_flag true
     for epoch in range(epochs):
-        for row in data:
-            activation_outputs = forward(row, weights,bias_flag,sigmoid0_tangent1)
+        for i in range(number_of_rows):
+            activation_outputs = forward(x_train[i], weights,bias_flag,sigmoid0_tangent1)
             #weights=backward(row, activation_outputs, weights, sigmoid0_tangent1)
             #weights_update(row, activation_outputs, weights, eta)
     return weights,activation_outputs
@@ -32,13 +33,18 @@ def weight_initialize(hidden_layers):
         x = np.random.rand(hidden_layers[i+1], hidden_layers[i])
 
         new_column = np.ones((x.shape[0], 1))
+        # Add the new column to the array
         result = np.hstack((x, new_column))
         weights.append(result)
 
     x = np.random.rand(3, hidden_layers[len(hidden_layers)-1])
+    #x = np.random.rand(3, 2)
+
+    new_column = np.ones((3, 1))
     result = np.hstack((x, new_column))
     weights.append(result)
-    #print(weights)
+    print(weights)
+    
     return weights
 
 def backward(input_layer, activation_output, weights, bias, bias_flag, eta, sigmoid0_tangent1):
@@ -90,7 +96,3 @@ def forward(input_layer, weights,bias_flag, sigmoid0_tangent1):
                 output.append(temp)
         return output
     
-layers = np.array([4,2,3])
-data = np.array([[1,2,3,4,5]])
-w,a =mlp(data,layers,1,1,1,False)
-print(a)
