@@ -1,4 +1,5 @@
-
+import copy
+import numpy as np
 FEATURES = 5
 CLASSES = 3
 import math
