@@ -1,6 +1,6 @@
 import copy
 import numpy as np
-FEATURES = 5
+FEATURES = 3
 CLASSES = 3
 import math
 import numpy as np
