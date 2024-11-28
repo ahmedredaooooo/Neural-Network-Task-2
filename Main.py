@@ -12,5 +12,4 @@ def main(hidden_layers, eta, epochs, bias_flag, sigmoid0_tangent1):
     y_pred = evaluate(x_test, weights, bias_flag, sigmoid0_tangent1)
     confusion_matrix(y_test, y_pred, "TEST")
 
-    #test_NN(weights, x_test, y_test, "title")
     return

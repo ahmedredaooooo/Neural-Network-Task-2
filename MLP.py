@@ -1,4 +1,6 @@
 import copy
+import random
+
 import numpy as np
 FEATURES = 5
 CLASSES = 3
@@ -10,10 +12,9 @@ def weight_initialize(hidden_layers):
     # NOTE!!!! FISRT index represents the number of {{ input layer features}}
     # hidden_layers = np.array([4,2,3]) # first index isn't one of the hidden layers
     hidden_layers = np.append(np.array([FEATURES]), hidden_layers)
-
     weights = []
     for i in range(len(hidden_layers) - 1):
-        x = np.random.uniform(0.0, 1.0, (hidden_layers[i + 1], hidden_layers[i]))
+        x = np.random.uniform(-1.0, 1.0, (hidden_layers[i + 1], hidden_layers[i]))
         # x = np.random.rand(hidden_layers[i+1], hidden_layers[i])
 
         new_column = np.ones((x.shape[0], 1))
@@ -21,7 +22,7 @@ def weight_initialize(hidden_layers):
         result = np.hstack((x, new_column))
         weights.append(result)
 
-    x = np.random.uniform(0.0, 1.0, (CLASSES, hidden_layers[-1]))
+    x = np.random.uniform(-1.0, 1.0, (CLASSES, hidden_layers[-1]))
     # x = np.random.rand(3, hidden_layers[len(hidden_layers)-1])
 
     new_column = np.ones((CLASSES, 1))
@@ -83,42 +84,17 @@ def forward(input_layer, weights, bias_flag, sigmoid0_tangent1):
 
 
 def backward(expected, activation_outputs, weights, sigmoid0_tangent1):
-    #expected should be (0,1,2) the encoded value for the class ex: 1
-    #activation should be ...
-    #weights should be ...
-    #sigmoid0_tangent1 should be (0, 1) ex: 0
-
-    #expected = 1
-    #activation_outputs = [[0.66818777217, 0.73105857863, 1], [0.65494270852, 0.72189235647, 0.780211323, 1]]
-    #weights = [[[0.1, 0.3, 0.5, 0.1], [0.2, 0.4, 0.6, 0.2]], [[0.7, 0.1, 0.1], [0.8, 0.3, 0.2], [0.9, 0.5, 0.3]]]
-    #sigmoid0_tangent1 = 0
-    #activation_outputs = [[1, 0.731, 0.5], [0.4711]]
-    #weights = np.array([[[0.5,-0.5,0,1], [-0.5,0,0,0.5]], [[0, -0.5,0.5]]])
-
-    t = [0] * CLASSES
+    _weights = weights.copy()
+    t = [0] * (CLASSES + 1)
     t[expected] = 1
-    def sigmoid_dash(layer_idx, neuron_idx):
-        return activation_outputs[layer_idx][neuron_idx] * (1 - activation_outputs[layer_idx][neuron_idx])
-    def tangent_dash(layer_idx, neuron_idx):
-        return (1 - activation_outputs[layer_idx][neuron_idx]) * (1 + activation_outputs[layer_idx][neuron_idx])
-    f_dash = tangent_dash if sigmoid0_tangent1 else sigmoid_dash
-
-    signal_errors = copy.deepcopy(activation_outputs)
-    for it in range(len(signal_errors)):
-        for jt in range(len(signal_errors[it])):
-            signal_errors[it][jt] = 0.0
-
+    signal_errors = activation_outputs.copy()
+    signal_errors[-1] = ((sigmoid0_tangent1 + np.array(activation_outputs[-1])) * (1 - np.array(activation_outputs[-1])) * (np.array(t) - np.array(activation_outputs[-1]))).tolist()
     layers = len(activation_outputs)
-    for j in range(len(activation_outputs[-1]) - 1):
-        signal_errors[-1][j] = f_dash(-1, j) * (t[j] - activation_outputs[-1][j])
     for i in range(layers - 2, -1, -1):
-        for j in range(len(activation_outputs[i]) - 1):
-            ii = i + 1
-            sigma = 0
-            for jj in range(len(activation_outputs[ii]) - 1):
-                sigma += signal_errors[ii][jj] * weights[ii][jj][j]
-            signal_errors[i][j] = f_dash(i, j) * sigma
-    #print(f"signal errors : {signal_errors}")
+        ii = i + 1
+        _weights[ii] = _weights[ii].tolist()
+        _weights[ii].append([0] * len(_weights[ii][0]))
+        signal_errors[i] = ((sigmoid0_tangent1 + np.array(activation_outputs[i])) * (1 - np.array(activation_outputs[i])) * np.array(np.dot(signal_errors[ii], _weights[ii]))).tolist()
     return signal_errors
 
 

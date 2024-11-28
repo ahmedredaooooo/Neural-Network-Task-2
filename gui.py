@@ -43,13 +43,13 @@ tk.Label(root, text="Enter number of epochs:").grid(row=3, column=0, sticky="w",
 epochs = tk.Entry(root)
 epochs.grid(row=3, column=1, padx=5, pady=5)
 
-bias_var = tk.BooleanVar()
+bias_var = tk.BooleanVar(value=True)
 bias_checkbox = tk.Checkbutton(root, text="Add bias", variable=bias_var)
 bias_checkbox.grid(row=4, columnspan=2, pady=5)
 
 
 tk.Label(root, text="Choose activation function:").grid(row=5, column=0, sticky="w", padx=5, pady=5)
-activation_function = tk.StringVar(value="Sigmoid")
+activation_function = tk.StringVar(value="Hyperbolic Tangent")
 
 radio_frame = tk.Frame(root)
 radio_frame.grid(row=5, column=1, sticky="w")
@@ -58,5 +58,12 @@ tk.Radiobutton(radio_frame, text="Hyperbolic Tangent", variable=activation_funct
 
 submit_button = tk.Button(root, text="Submit", command=on_submit)
 submit_button.grid(row=6, columnspan=2, pady=10)
+
+
+hidden_layers.insert(0, "2")
+neurons.insert(0, "4,5")
+eta.insert(0, "0.01")
+epochs.insert(0, "100")
+
 
 root.mainloop()

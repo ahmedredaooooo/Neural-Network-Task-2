@@ -56,15 +56,15 @@ def preprocess():
 
 
 
-    print("\nNumber of rows for each class in y_train:")
-    print(y_train.value_counts())
-    print("\nNumber of rows for each class in y_test:")
-    print(y_test.value_counts())
+    # print("\nNumber of rows for each class in y_train:")
+    # print(y_train.value_counts())
+    # print("\nNumber of rows for each class in y_test:")
+    # print(y_test.value_counts())
 
 
-    print("\nFinal concatenated training and testing sets:")
-    print(f"x_train shape: {x_train.shape}, y_train shape: {y_train.shape}")
-    print(f"x_test shape: {x_test.shape}, y_test shape: {y_test.shape}")
+    # print("\nFinal concatenated training and testing sets:")
+    # print(f"x_train shape: {x_train.shape}, y_train shape: {y_train.shape}")
+    # print(f"x_test shape: {x_test.shape}, y_test shape: {y_test.shape}")
 
 
 
@@ -86,6 +86,6 @@ def preprocess():
     x_test = np.array(x_test)
     y_train = np.array(y_train)
     y_test = np.array(y_test)
-    print()
+    # print()
     return x_train, x_test, y_train, y_test
 
