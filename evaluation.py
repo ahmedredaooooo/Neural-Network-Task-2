@@ -1,8 +1,6 @@
-
 import numpy as np
-import tkinter as tk
-from tkinter import ttk
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 from MLP import forward
 
 
@@ -47,39 +45,30 @@ def evaluate(x_test, weights,bias_flag, sigmoid0_tangent1):
         actual_class.append(output_values.index(max(output_values)))
     return actual_class
 
+
 def confusion_matrix(expected, predicted, title):
     conf_matrix = np.zeros((3, 3), dtype=int)
     true_predictions = 0
 
-    for i in range(expected.shape[0]):
+    for i in range(len(expected)):
         conf_matrix[expected[i]][predicted[i]] += 1
         if expected[i] == predicted[i]:
             true_predictions += 1
 
-    root = tk.Toplevel()
-    root.title(title)
-
-    columns = ('', 'Predicted Class 0', 'Predicted Class 1', 'Predicted Class 2')
-    tree = ttk.Treeview(root, columns=columns, show='headings')
-
-    tree.heading('', text='Expected\\Predicted')
-    tree.heading('Predicted Class 0', text='Class 0')
-    tree.heading('Predicted Class 1', text='Class 1')
-    tree.heading('Predicted Class 2', text='Class 2')
-
-    tree.insert('', tk.END, values=('Expected Class 0', conf_matrix[0][0], conf_matrix[0][1], conf_matrix[0][2]))
-    tree.insert('', tk.END, values=('Expected Class 1', conf_matrix[1][0], conf_matrix[1][1], conf_matrix[1][2]))
-    tree.insert('', tk.END, values=('Expected Class 2', conf_matrix[2][0], conf_matrix[2][1], conf_matrix[2][2]))
-
-    tree.pack(expand=True, fill='both')
-
-    total_predictions = expected.shape[0]
+    total_predictions = len(expected)
     accuracy = float(true_predictions) / float(total_predictions)
-    accuracy_label = tk.Label(root, text=f"Accuracy: {accuracy:.2f}")
-    accuracy_label.pack(pady=10)
-    # root.mainloop()
-    return root
 
+    plt.figure(figsize=(6, 4))
+    sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', cbar=True,
+                xticklabels=['Class A', 'Class B', 'Class C'], yticklabels=['Class A', 'Class B', 'Class C'])
 
-# confusion_matrix(e,p,"ahmed redaoooooooooooooo")
+    plt.gca().xaxis.set_label_position('top')
+    plt.gca().xaxis.tick_top()
+
+    plt.xlabel('Prediction', labelpad=15)
+    plt.ylabel('Expected', labelpad=15)
+    plt.title(title, pad=20, fontsize=16)
+    plt.figtext(0.5, 0.02, f"Accuracy: {accuracy:.2f}", ha="center", fontsize=14, color="black")
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
+    plt.show()
 
