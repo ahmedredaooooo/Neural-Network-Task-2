@@ -43,7 +43,7 @@ def evaluate(x_test, weights,bias_flag, sigmoid0_tangent1):
         neurons = forward(test_element, weights,bias_flag, sigmoid0_tangent1)
         output_layer = neurons[-1]
         output_values = output_layer[:3]
-        print(output_values)
+        #print(output_values)
         actual_class.append(output_values.index(max(output_values)))
     return actual_class
 
@@ -77,7 +77,8 @@ def confusion_matrix(expected, predicted, title):
     accuracy = float(true_predictions) / float(total_predictions)
     accuracy_label = tk.Label(root, text=f"Accuracy: {accuracy:.2f}")
     accuracy_label.pack(pady=10)
-    root.mainloop()
+    # root.mainloop()
+    return root
 
 
 # confusion_matrix(e,p,"ahmed redaoooooooooooooo")
