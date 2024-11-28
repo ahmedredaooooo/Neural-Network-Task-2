@@ -13,9 +13,12 @@ def on_submit():
     #eta, epochs, bias_flag, sigmoid0_tangent1 = 0
 
     neurons_list = list(map(int, neurons.get().split(',')))
-
-
-    main(neurons_list, float(eta.get()), int(epochs.get()), bias_var.get(),activation_function.get()=="Hyperbolic Tangent" )
+    bias_flag = 0
+    if bias_var.get() == True:
+        bias_flag = 1
+    else:
+        bias_flag = 0
+    main(neurons_list, float(eta.get()), int(epochs.get()), bias_flag,activation_function.get()=="Hyperbolic Tangent" )
 
 
 
