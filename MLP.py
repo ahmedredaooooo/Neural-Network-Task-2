@@ -159,6 +159,6 @@ def mlp(x_train, y_train, hidden_layers, eta, epochs, bias_flag, sigmoid0_tangen
             #print(activation_outputs)
             signal_error=backward(y_train[i], activation_outputs, weights, sigmoid0_tangent1)
             weights = weights_update(x_train[i], activation_outputs, signal_error, weights, eta)
-    return weights,activation_outputs
+    return weights
 
 

@@ -6,38 +6,38 @@ from tkinter import ttk
 from MLP import forward
 
 
-e = np.array([1,1,0,2,1,0])
-p = np.array([1,1,2,1,1,0])
+# e = np.array([1,1,0,2,1,0])
+# p = np.array([1,1,2,1,1,0])
+#
+#
+# def test_NN(w, b, x, y, title):
+#     x = np.array(x)
+#     y = np.array(y)
+#     output = (x @ w + b).reshape(-1)
+#     output = np.where(output >= 0, 1, -1)
+#     confusion_matrix(y, output, title)
+#
+# def h(w, x, b):
+#     x = x.reshape(-1, 1)
+#     return (w.T @ x + b).item()
+#
+# def predict(w, b, x_test, y_test, add_bias):
+#     b = np.array(b)
+#     x_test = np.array(x_test)
+#     y_test = np.array(y_test)
+#     # print(f"\ny_test shape: {y_test.shape}")
+#     # print(f"w shape: {w.shape}")
+#     # print(f"b shape: {b.shape}")
+#     # print(f"\nx_test shape: {x_test.shape}")
+#     y_pred = (x_test @ w + b).reshape(-1)
+#     predicted_classes = np.where(y_pred < 0, -1, 1)
+#     accuracy = np.mean(predicted_classes == y_test)
+#     actual_val = predicted_classes.tolist()
+#
+#     print(f"Accuracy: {accuracy}")
+#     return accuracy, actual_val
 
-
-def test_NN(w, b, x, y, title):
-    x = np.array(x)
-    y = np.array(y)
-    output = (x @ w + b).reshape(-1)
-    output = np.where(output >= 0, 1, -1)
-    confusion_matrix(y, output, title)
-
-def h(w, x, b):
-    x = x.reshape(-1, 1)
-    return (w.T @ x + b).item()
-
-def predict(w, b, x_test, y_test, add_bias):
-    b = np.array(b)
-    x_test = np.array(x_test)
-    y_test = np.array(y_test)
-    # print(f"\ny_test shape: {y_test.shape}")
-    # print(f"w shape: {w.shape}")
-    # print(f"b shape: {b.shape}")
-    # print(f"\nx_test shape: {x_test.shape}")
-    y_pred = (x_test @ w + b).reshape(-1)
-    predicted_classes = np.where(y_pred < 0, -1, 1)
-    accuracy = np.mean(predicted_classes == y_test)
-    actual_val = predicted_classes.tolist()
-
-    print(f"Accuracy: {accuracy}")
-    return accuracy, actual_val
-
-def y_actual(x_test, weights,bias_flag, sigmoid0_tangent1):
+def evaluate(x_test, weights,bias_flag, sigmoid0_tangent1):
     actual_class =[]
     for test_element in x_test:
         neurons = forward(test_element, weights,bias_flag, sigmoid0_tangent1)
@@ -80,5 +80,5 @@ def confusion_matrix(expected, predicted, title):
     root.mainloop()
 
 
-confusion_matrix(e,p,"ahmed redaoooooooooooooo")
+# confusion_matrix(e,p,"ahmed redaoooooooooooooo")
 
