@@ -86,5 +86,6 @@ def preprocess():
     x_test = np.array(x_test)
     y_train = np.array(y_train)
     y_test = np.array(y_test)
+    print()
     return x_train, x_test, y_train, y_test
 

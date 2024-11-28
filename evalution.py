@@ -1,49 +1,45 @@
+
+import numpy as np
 import tkinter as tk
 from tkinter import ttk
-import numpy as np
 
+e = np.array([1,1,0,2,1,0])
+p = np.array([1,1,2,1,1,0])
 
-def confusion_matrix(expected, result, title):
-    true_positive = 0
-    true_negative = 0
-    false_positive = 0
-    false_negative = 0
+def confusion_matrix(expected, predicted, title):
+    conf_matrix = np.zeros((3, 3), dtype=int)
     true_predictions = 0
 
     for i in range(expected.shape[0]):
-        if result[i] == expected[i]:
-            if result[i] == 1:
-                true_positive += 1
-            else:
-                true_negative += 1
+        conf_matrix[expected[i]][predicted[i]] += 1
+        if expected[i] == predicted[i]:
             true_predictions += 1
-        else:
-            if result[i] == 1:
-                false_positive += 1
-            else:
-                false_negative += 1
 
     root = tk.Toplevel()
     root.title(title)
 
-    columns = ('', 'Predicted Positive', 'Predicted Negative')
+    columns = ('', 'Predicted Class 0', 'Predicted Class 1', 'Predicted Class 2')
     tree = ttk.Treeview(root, columns=columns, show='headings')
 
-    tree.heading('', text='')
-    tree.heading('Predicted Positive', text='Predicted Positive')
-    tree.heading('Predicted Negative', text='Predicted Negative')
+    tree.heading('', text='Expected\\Predicted')
+    tree.heading('Predicted Class 0', text='Class 0')
+    tree.heading('Predicted Class 1', text='Class 1')
+    tree.heading('Predicted Class 2', text='Class 2')
 
-    tree.insert('', tk.END, values=('Actual Positive', true_positive, false_negative))
-    tree.insert('', tk.END, values=('Actual Negative', false_positive, true_negative))
+    tree.insert('', tk.END, values=('Expected Class 0', conf_matrix[0][0], conf_matrix[0][1], conf_matrix[0][2]))
+    tree.insert('', tk.END, values=('Expected Class 1', conf_matrix[1][0], conf_matrix[1][1], conf_matrix[1][2]))
+    tree.insert('', tk.END, values=('Expected Class 2', conf_matrix[2][0], conf_matrix[2][1], conf_matrix[2][2]))
 
     tree.pack(expand=True, fill='both')
 
-    Accuracy = float(true_predictions) / float(result.shape[0])
-    accuracy_label = tk.Label(root, text=f"Accuracy: {Accuracy}")
+    total_predictions = expected.shape[0]
+    accuracy = float(true_predictions) / float(total_predictions)
+    accuracy_label = tk.Label(root, text=f"Accuracy: {accuracy:.2f}")
     accuracy_label.pack(pady=10)
+    root.mainloop()
 
-    return root
 
+confusion_matrix(e,p,"ahmed redaoooooooooooooo")
 
 def test_NN(w, b, x, y, title):
     x = np.array(x)
