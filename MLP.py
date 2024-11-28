@@ -60,7 +60,7 @@ def backward(input_layer, expected, activation_outputs, weights, sigmoid0_tangen
 
     input_layer = np.array([1, 0, 1])
     expected = 1
-    activation_outputs = [[0.6682, 0.7311, 1], [0.6478, 0.7099, 0.7765, 1]]
+    activation_outputs = [[0.66818777217, 0.73105857863, 1], [0.65494270852, 0.72189235647, 0.780211323, 1]]
     weights = [[[0.1, 0.3, 0.5, 0.1], [0.2, 0.4, 0.6, 0.2]], [[0.7, 0.1, 0.1], [0.8, 0.3, 0.2], [0.9, 0.5, 0.3]]]
     sigmoid0_tangent1 = 0
     t = [0] * CLASSES
@@ -73,14 +73,13 @@ def backward(input_layer, expected, activation_outputs, weights, sigmoid0_tangen
         return activation_outputs[layer_idx][neuron_idx] * (1 - activation_outputs[layer_idx][neuron_idx])
     def tangent_dash(layer_idx, neuron_idx):
         return (1 - activation_outputs[layer_idx][neuron_idx]) * (1 + activation_outputs[layer_idx][neuron_idx])
-
     f_dash = tangent_dash if sigmoid0_tangent1 else sigmoid_dash
-    signal_errors = copy.deepcopy(activation_outputs)
 
+    signal_errors = copy.deepcopy(activation_outputs)
     for it in range(len(signal_errors)):
         for jt in range(len(signal_errors[it])):
             signal_errors[it][jt] = 0.0
-    print(signal_errors)
+
     layers = len(activation_outputs)
     for j in range(len(activation_outputs[-1]) - 1):
         signal_errors[-1][j] = f_dash(-1, j) * (t[j] - activation_outputs[-1][j])
@@ -92,12 +91,36 @@ def backward(input_layer, expected, activation_outputs, weights, sigmoid0_tangen
                 sigma += signal_errors[ii][jj] * weights[ii][jj][j]
             signal_errors[i][j] = f_dash(i, j) * sigma
     print(signal_errors)
-    return
+    return signal_errors
 
 
+backward([], 0, [[]], [[[]]], 0)
 
-def weights_update(row, activation_outputs, weights, eta):
-    return
+def weights_update(input_layer, activation_outputs, signal_errors, weights, eta):
+
+    input_layer = [1, 0, 1]
+    activation_outputs = [[0.66818777217, 0.73105857863, 1], [0.65494270852, 0.72189235647, 0.780211323, 1]]
+    signal_errors = [[-0.039765128273060876, -0.012769354595226929, 0.0], [-0.14801230842557633, 0.055833942357178645, -0.13379189729003302, 0.0]]
+    weights = [[[0.1, 0.3, 0.5, 0.1], [0.2, 0.4, 0.6, 0.2]], [[0.7, 0.1, 0.1], [0.8, 0.3, 0.2], [0.9, 0.5, 0.3]]]
+    eta = 0.1
+
+    input_layer.append(1)
+
+    layers = len(activation_outputs)
+
+
+    for j in range(len(activation_outputs[0]) - 1):
+        for k in range(len(input_layer)):
+            weights[0][j][k] = weights[0][j][k] + eta * signal_errors[0][j] * input_layer[k]
+
+    for i in range(1, layers):
+        for j in range(len(activation_outputs[i]) - 1):
+            for k in range(len(activation_outputs[i - 1])):
+                weights[i][j][k] = weights[i][j][k] + eta * signal_errors[i][j] * activation_outputs[i - 1][k]
+    print(weights)
+    return weights
+
+weights_update([], [[]], [[]], [[[]]], 0)
 
 def forward(input_layer, weights,bias_flag, sigmoid0_tangent1):
     number_of_layers = len(weights)
